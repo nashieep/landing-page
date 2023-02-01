@@ -21,18 +21,26 @@
 /**
  * Define Global Variables
  * //navigation var
-*/const navigation = document.getElementbyId("navbar__list");
-//section var
-const sections = document.querySelectorAll("section");
+*/
+const navigation = document.getElementById('navbar__list');
 
+//section var
+const section = document.querySelectorAll('section');
 
 /**
  * End Global Variables
  * Start Helper Functions
  * 
 */
-
-
+// create navbar from section id names from querySelectorAll
+function createNavbar() {
+  sectionsElements.forEach((section) => {
+    navigation.appendChild(createNavbarItem(section));
+  });
+    navList +='<li><a class="nav__link" "menu__link" href="#${section.id}"id="navli">${section.dataset.nav}</a></li>';
+  });
+navbarUL.innerHTML = navList;
+createNavbar();
 
 /**
  * End Helper Functions
@@ -41,25 +49,26 @@ const sections = document.querySelectorAll("section");
 */
 
 // build the nav
-const navbuild = () =>{
+const navBuild = () => {
   
-  let navul =''
+  let navUI ='';
   //loop over all sections
-  sections.forEach(Section => (
+  sections.forEach(Section => {
+     const sectionID = section.id;
+    const sectionDataNav= section.dataset.nav;
     
-  const sectionID = section.ID;
-    const Sectiondata= Section.data.nav;
-    
-    navul + = <li><a class="menu_link" href="#$(sectionID)">$[sectiondata]</li>
-    });
+    navUI += '<li><a class="menu__link" href="#${sectionID}">${sectionDataNav}</li>';
   //append elements to navigation
         navigation.innerHTML= navul;
   
 }
-navbuild();
+navBuild();
 
 // Add class 'active' to section when near top of viewport
-
+function addActiveClass(section) {
+  const id = section.getAttribute('id');
+  document.querySelector(`#${id}`).classList.add('your-active-class');
+}
 
 // Scroll to anchor ID using scrollTO event
 
@@ -75,4 +84,3 @@ navbuild();
 // Scroll to section on link click
 
 // Set sections as active
-
