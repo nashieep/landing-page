@@ -20,65 +20,83 @@
 
 /**
  * Define Global Variables
- * //navigation var
+ * 
 */
-const navigation = document.getElementById('navbar__list');
-
+// navigation var
+const navBar = document.getElementById('navbar__list');
+// navList var
+const navList = document.querySelector('#navbar__list');
+//  section var
+const sections = document.querySelectorAll('section');
 //section var
-const section = document.querySelectorAll('section');
+document.querySelectorAll("section");
 
 /**
  * End Global Variables
  * Start Helper Functions
  * 
 */
-// create navbar from section id names from querySelectorAll
-function createNavbar() {
-  sectionsElements.forEach((section) => {
-    navigation.appendChild(createNavbarItem(section));
-  });
-    navList +='<li><a class="nav__link" "menu__link" href="#${section.id}"id="navli">${section.dataset.nav}</a></li>';
-  });
-navbarUL.innerHTML = navList;
-createNavbar();
+//build nav
+function Navbuild(){
+    sections.forEach(section => {
+        //Create  li elements contained inside the ul
+        const navBar = document.createElement('li');
+        //Insert the html text to  the li
+        navBar.insertAdjacentHTML("afterbegin",`<a href="#${section}" class="menu__link">${section.dataset.nav}</a>`);
+        //Append the li to the ul
+        navList.appendChild(navBar);
 
+        //scrollBehavior Function 
+        scrollBehavior(navBar, section);
+    });
+    //Append the ul to the nav
+    navBar.appendChild(navList);
+}
+// Start of Scroll to anchor ID using scrollTO event
+function scrollBehavior(navBar, section){
+    navBar.addEventListener('click', function(event){
+        event.preventDefault();
+        window.scrollTo({
+            top: section.offsetTop,
+            behavior:"smooth"
+        });
+    });
+}
+//Start of Set the Section class 'active' when it near to the top of viewport
+// give section a different appearance when viewed
+function ActiveClass(){
+  for (section of sections){
+    //if section is in viewport
+    if (sectionInViewPort(section)){
+      // check if "your-active-class" already exist
+      if (!section.classList.contains('your-active-class')){
+        // add it
+        section.classList.add('your-active-class');
+      }
+    } else { // remove 'your-active-class' if not in viewport
+      section.classList.remove('your-active-class');
+    }
+  }
+}
+// Start of Toggle the NavBar According to User Scroll Activity
+function toggleActiveSection(){
+    let userScroll;
+    //Default Settings for NavBar while scrolling
+    header.style.css = 'opacity: 1; transition: ease 0.3s ;'
+    // Cleartimeout throughout the scrolling
+    window.Timeout( userScroll );
+    //The Timeout to run after scrolling ends
+    userScroll = setTimeout(function() {
+      //The Settings Executed on NavBar after Timeout finished
+        header.style.css = 'opacity: 0; transition: ease 0.3s ;'
+    },5000);
+}
 /**
  * End Helper Functions
  * Begin Main Functions
  * 
 */
 
-// build the nav
-const navBuild = () => {
-  
-  let navUI ='';
-  //loop over all sections
-  sections.forEach(Section => {
-     const sectionId = section.id;
-    const sectionDataNav= section.dataset.nav;
-    
-    navUI += '<li><a class="menu__link" href="#${sectionID}">${sectionDataNav}</li>';
-  //append elements to navigation
-        navigation.innerHTML= navul;
-  
-}
-
-// Add class 'active' to section when near top of viewport
-const addActivesection = () => {
-  const id = section.getAttribute('id');
-  document.querySelector(`#${id}`).classList.add('your-active-class');
-}
-
-// Scroll to anchor ID using scrollTO event
-const handleLinkClick = (e) => {
-	e.preventDefault();
-	const sectionId = e.target.getAttribute('href');
-	const section = document.querySelector(sectionId);
-	window.scrollTo({
-		top: section.offsetTop,
-		behavior: 'smooth',
-	});
-};
 
 /**
  * End Main Functions
@@ -87,9 +105,16 @@ const handleLinkClick = (e) => {
 */
 
 // Build menu 
-navBuilt();
-// Scroll to section on link click
-const menuLinks = document.querySelectorAll('.menu__link');
-menuLinks.forEach((link) => link.addEventListener('click', handleLinkClick));
+Navbuild();
+// scroll to top using scrollTO event
+document.getElementById("return_top").addEventListener('click', function(){
+    window.scrollTo({
+        top: 0,
+        behavior:"smooth"
+    });
+});
 // Set sections as active
-window.addEventListener('scroll', detectActiveSection);
+window.addEventListener('scroll', (event)=>{
+  activeSection();
+  toggleActiveClass();
+})
