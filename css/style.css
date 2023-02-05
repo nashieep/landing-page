@@ -81,7 +81,14 @@ section {
     text-decoration: none;
     color: #000;
 }
-
+.active_button{
+  display: block;
+  background: #051440
+  font-size: 18px
+  font-weight: 600
+  text-decoration: none
+  color: rgb(201 90 90)
+}
 .navbar__menu .menu__link:hover {
     background: #333;
     color: #fff;
